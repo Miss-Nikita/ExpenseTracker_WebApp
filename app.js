@@ -1,8 +1,11 @@
+require("dotenv").config({path:"./.env"})
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+require("./config/db")
 
 const expenseRouter = require("./routes/expense.routes")
 var indexRouter = require('./routes/index.routes');
