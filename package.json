@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "tailwind:css": "postcss public/stylesheets/tailwind.css -o public/stylesheets/style.css"
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
@@ -12,9 +13,14 @@
     "dotenv": "^16.4.5",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
+    "express-session": "^1.18.0",
     "http-errors": "~1.6.3",
     "mongoose": "^8.6.3",
     "morgan": "~1.9.1",
+    "nodemon": "^3.1.6",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^8.0.0",
     "postcss": "^8.4.47",
     "postcss-cli": "^11.0.0",
     "pug": "^3.0.3",

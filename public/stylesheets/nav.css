@@ -1,0 +1,19 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html , body{
+    height: 100%;
+    width: 100%;
+}
+
+
+.frontpage a{
+    display: flex;
+    flex-direction: column;
+    gap: 20%;
+    color: rgb(71, 12, 231);
+    margin: 20px;
+}
+
