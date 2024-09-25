@@ -1,15 +1,15 @@
 <%- include("partials/header")%>
     <%- include("partials/nav")%>
-        <!--  -->
+
+
         <h1>Update User</h1>
 
-
         <img class="avatar-preview w-[10vh] h-[10vh] rounded-full object-cover object-center"
-         src="<%= user.avatar%>"
-            alt="" />
+            src="/images/<%= user.avatar%>" alt="" />
 
 
-        <form class="hidden avatar-form" action="/user/avatar" method="post">
+
+        <form class="hidden avatar-form" action="/user/avatar" method="post" enctype="multipart/form-data">
             <input type="file" name="avatar" />
         </form>
 
@@ -23,7 +23,7 @@
             <button>Update User Details</button>
         </form>
 
-        
+
         <script>
             const avatarPreview = document.querySelector(".avatar-preview");
             const avatarForm = document.querySelector(".avatar-form");

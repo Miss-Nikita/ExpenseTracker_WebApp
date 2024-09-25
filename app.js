@@ -58,8 +58,13 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-passport.serializeUser(UserSchema.serializeUser());
-passport.deserializeUser(UserSchema.deserializeUser());
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
 
 
 app.use(flash());
