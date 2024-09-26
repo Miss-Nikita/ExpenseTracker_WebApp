@@ -11,6 +11,9 @@ const session = require("express-session");
 const UserSchema = require("./models/user.schema");
 
 
+const fileupload = require("express-fileupload");
+
+
 // connect flash
 const flash = require("connect-flash")
 
@@ -41,6 +44,9 @@ app.use(cookieParser());
 
 // static route
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+app.use(fileupload());
 
 
 

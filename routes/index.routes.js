@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var client = require("../util/cache");
+const imagekit = require("../util/imagekit")
+
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -82,6 +85,40 @@ router.get("/checkflash", function (req, res, next) {
 router.get("/destroyflash", function (req, res, next) {
   req.flash("info");
   res.status(200).json({ message: "Flash Message Destroyed" });
+});
+
+router.post("/createcache",(req,res,next) =>{
+  client.set("user:profile:123456", 
+    JSON.stringify("important data")
+  );
+  res.status(200).json({message:"cache created"})
+});
+
+
+router.get("/getcache" ,async(req,res,next) =>{
+const data = await client.get('user:profile:123456')
+res.status(200).json({
+  message: "Cache Retrieved",
+  data: JSON.parse(data),
+});
+})
+
+router.get("/delcache", async(req,res,next) =>{
+  await client.del("user:profile:123456")
+  res.status(200).json({ message: "Cache Deleted" });
+
+})
+
+
+router.post("/imagekit", async function (req, res, next) {
+  try {
+      res.status(200).json({
+          message: "Image Uploaded",
+          res: req.files[0].avatar,
+      });
+  } catch (error) {
+      next(error);
+  }
 });
 
 module.exports = router;

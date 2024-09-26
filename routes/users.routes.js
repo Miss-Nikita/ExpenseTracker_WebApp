@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const UserSchema = require('../models/user.schema')
+const imagekit = require("../util/imagekit")
+
 
 
 const { isLoggedIn } = require("../middlewares/auth.middleware");
@@ -56,11 +58,12 @@ router.get('/auth/google',
 router.get(
   "/auth/google/callback",
   (req, res, next) => {
+    
     console.log("req => ", req.query);
     return next();
   },
   passport.authenticate("google", { failureRedirect: "/" }),
-  async (req, res) => {
+  async (req, res, next) => {
     const isUserAlreadyExist = await UserSchema.findOne({
       email: req.user.emails[0].value,
     });
@@ -212,30 +215,84 @@ router.post("/update", isLoggedIn, async (req, res, next) => {
   }
 });
 
+
+
+
+
+// router.post(
+//   "/avatar",
+//   isLoggedIn,
+//   upload.single("avatar"),
+//   async (req, res,next) => {
+//     try {
+//       if (req.user.avatar != "default.png") {
+//         fs.unlinkSync(`public/images/${req.user.avatar}`);
+//       }
+//       req.user.avatar = req.file.filename;
+//       // await req.user.save();
+//       res.redirect("/user/update");
+//     } catch (error) {
+//       next(error);
+//     }
+//   })
+
+
+
+router.post("/avatar", isLoggedIn, async (req, res, next) => {
+  // console.log(req.files);
+
+  try {
+
+      if (req.user.avatar.fileId) {
+          await imagekit.deleteFile(req.user.avatar.fileId);
+      }
+
+      const result = await imagekit.upload({
+          file: req.files.avatar.data,
+          fileName: req.files.avatar.name,
+      });
+
+      // console.log(result);
+      // res.json(result);
+
+      // req.user.avatar = result.url;
+      // await req.user.save();
+      // res.redirect("/user/update");
+
+      const { fileId, url, thumbnailUrl } = result;
+      req.user.avatar = { fileId, url, thumbnailUrl };
+      // await req.user.save();
+      res.redirect("/user/update");
+
+
+  } catch (error) {
+      next(error);
+  }
+});
+
+
+
+
+
 // router.post("/avatar", isLoggedIn, async (req, res, next) => {
+//   console.log(req.files);
 //   try {
-//     // user multer and req.file.filename and update to user
+//       const result = await imagekit.upload({
+//           file: req.files.avatar.data,
+//           fileName: req.files.avatar.name,
+//       });
+//       console.log(result);
+//       res.json(result);
+//       // req.user.avatar = result.url;
+//       // await req.user.save();
+//       // res.redirect("/user/update");
 //   } catch (error) {
-//     next(error);
+//       next(error);
 //   }
 // });
 
-router.post(
-  "/avatar",
-  isLoggedIn,
-  upload.single("avatar"),
-  async (req, res) => {
-    try {
-      if (req.user.avatar != "default.jpg") {
-        fs.unlinkSync(`public/images/${req.user.avatar}`);
-      }
-      req.user.avatar = req.file.filename;
-      await req.user.save();
-      res.redirect("/user/update");
-    } catch (error) {
-      next(error);
-    }
-  })
+
+
 
 router.get("/forget-password", async (req, res) => {
   res.render("forgetpassword_email", {
@@ -245,17 +302,41 @@ router.get("/forget-password", async (req, res) => {
 });
 
 
+// router.post("/forget-password", async (req, res, next) => {
+//   try {
+//     const user = await UserSchema.findOne({ email: req.body.email });
+//     if (!user) return next(new Error("User not found!"));
+//     // send email to user with otp
+//     // and save the same otp to database
+//     res.redirect(`/user/forget-password/${user._id}`);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+
 router.post("/forget-password", async (req, res, next) => {
   try {
-    const user = await UserSchema.findOne({ email: req.body.email });
-    if (!user) return next(new Error("User not found!"));
-    // send email to user with otp
-    // and save the same otp to database
-    res.redirect(`/user/forget-password/${user._id}`);
+      const user = await UserSchema.findOne({ email: req.body.email });
+      if (!user) return next(new Error("User not found!"));
+
+    const otp=Math.round(Math.random()*10000);
+           // send email to user with otp
+    sendEmail(
+      user.email,
+      'welcome to m11-server',
+      '',
+      `<h1>your onetime otp is ${otp}</h1>` );
+
+      // and save the same otp to database
+      await client.set("user:otp:1234",JSON.stringify(otp))
+      res.redirect(`/user/forget-password/${user._id}`);
   } catch (error) {
-    next(error);
+      next(error);
   }
 });
+
+
 
 
 router.get("/forget-password/:id", async (req, res) => {
@@ -268,17 +349,36 @@ router.get("/forget-password/:id", async (req, res) => {
 
 
 
+// router.post("/forget-password/:id", async (req, res, next) => {
+//   try {
+//     const user = await UserSchema.findById(req.params.id);
+//     // compare the req.body.otp with the otp in database
+//     // if matched redirect to password page else ERROR
+//     res.redirect(`/user/set-password/${user._id}`);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+
+
 router.post("/forget-password/:id", async (req, res, next) => {
   try {
-    const user = await UserSchema.findById(req.params.id);
-    // compare the req.body.otp with the otp in database
-    // if matched redirect to password page else ERROR
-    res.redirect(`/user/set-password/${user._id}`);
+      const user = await UserSchema.findById(req.params.id);
+      // compare the req.body.otp with the otp in database
+      const otp=await client.get("user:otp:1234")
+      if(req.body.otp== JSON.parse(otp)){
+      // if matched redirect to password page else ERROR
+      res.redirect(`/user/set-password/${user._id}`);
+  }
+  else{
+      console.log("invalid otp");
+      
+    }
   } catch (error) {
-    next(error);
+      next(error);
   }
 });
-
 
 router.get("/set-password/:id", async (req, res) => {
   res.render("forgetpassword_password", {
@@ -293,6 +393,9 @@ router.post("/set-password/:id", async (req, res, next) => {
   try {
     const user = await UserSchema.findById(req.params.id);
     await user.setPassword(req.body.password);
+
+    user.otp=undefined;
+
     await user.save();
     res.redirect("/user/signin");
   } catch (error) {

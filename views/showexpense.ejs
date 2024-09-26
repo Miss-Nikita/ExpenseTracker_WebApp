@@ -3,7 +3,7 @@
     <h1>Watch Expenses</h1>
 
     <ul>
-      <% expenses.forEach(function(expense) { %>
+      <% user.expenses.forEach(function(expense) { %>
         <li>
           <%= expense.title %> |
             <a href="/expense/details/<%= expense._id%>">Details</a>

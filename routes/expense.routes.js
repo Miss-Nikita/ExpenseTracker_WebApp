@@ -10,27 +10,34 @@ router.get("/create", isLoggedIn,(req, res) => {
   })
 })
 
-router.post("/create", isLoggedIn,async (req, res, next) => {
+router.post("/create", isLoggedIn, async (req, res, next) => {
   try {
-    const newexpense = await new ExpenseSchema(req.body)
-    await newexpense.save();
-    res.redirect("/expense/show")
+      const newexpense = await new ExpenseSchema(req.body)
+      newexpense.user = req.user._id;
+      await newexpense.save();
+
+      const currentUser = await UserSchema.findOne({username:req.user.username})
+      currentUser.expenses.push(newexpense._id);
+      await currentUser.save()
+
+      res.redirect("/expense/show")
   } catch (error) {
-    next(error)
+      next(error)
   }
 })
-
-
-router.get("/show", isLoggedIn,async  (req, res, next) => {
+router.get("/show", isLoggedIn,  async (req, res, next) => {
   try {
-    const expenses = await ExpenseSchema.find();
-    res.render("showexpense", {
-      title: "Expense Tracker | Watch Expense",
-      expenses: expenses,
-      user: req.user,
-    });
+      // const expenses = await ExpenseSchema.find();
+      console.log(req.user)
+      res.render("showexpense",
+          {
+              title: "Expense Tracker | Watch Expense",
+              // expenses: expenses,
+              // user: req.user,
+              user: await UserSchema.findOne({username:req.user.username}).populate("expenses"),
+          });
   } catch (error) {
-    next(error);
+      next(error)
   }
 });
 
