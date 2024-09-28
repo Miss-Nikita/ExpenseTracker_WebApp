@@ -3,6 +3,9 @@ var router = express.Router();
 const UserSchema = require('../models/user.schema')
 const imagekit = require("../util/imagekit")
 
+const client = require('../util/cache.js')
+
+
 
 
 const { isLoggedIn } = require("../middlewares/auth.middleware");
@@ -134,12 +137,12 @@ router.get("/profile", isLoggedIn, async (req, res, next) => {
   try {
 
 
-    sendEmail(
-      'bisennikita770@gmail.com',
-      "welcome",
-      "",
-      `<h1>hello from server</h1>`
-  )
+  //   sendEmail(
+  //     'bisennikita770@gmail.com',
+  //     "welcome",
+  //     "",
+  //     `<h1>hello from server</h1>`
+  // )
 
     const message = req.flash("success");
 
@@ -317,7 +320,10 @@ router.get("/forget-password", async (req, res) => {
 
 router.post("/forget-password", async (req, res, next) => {
   try {
+    console.log(req.body.email)
       const user = await UserSchema.findOne({ email: req.body.email });
+      console.log(user)
+
       if (!user) return next(new Error("User not found!"));
 
     const otp=Math.round(Math.random()*10000);

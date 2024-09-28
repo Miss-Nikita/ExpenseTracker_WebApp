@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const ExpenseSchema = require("../models/expense.schema")
 const { isLoggedIn } = require('../middlewares/auth.middleware')
+const UserSchema = require("../models/user.schema")
 
 router.get("/create", isLoggedIn,(req, res) => {
   res.render("createexpense", {

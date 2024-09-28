@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html , body{
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+}
+
+.signup-page {
+    background-color: fuchsia;
+    color: #fff;
+    padding: 40px;
+    
+    }
+
+    input{
+        color: black;
+    }
+    input::placeholder{
+        color: black;
+    }

@@ -1,18 +1,28 @@
 <%- include("partials/header")%>
+    <link rel="stylesheet" href="/stylesheets/SignPage.css">
     <%- include("partials/nav")%>
-        <h1>Signin User</h1>
-        <form action="/user/signin" method="post">
-            <input type="text" name="username" placeholder="johndoe" />
-            <input type="password" name="password" placeholder="********" />
-            <button>Signin User</button>
-        </form>
+
+        <div class="signin-page">
+
+            <h1 class="sigintag">Signin User</h1>
 
 
-        <p><a href="/user/forget-password">Forget Password ?</a></p>
+            <form action="/user/signin" method="post">
+                <input type="text" name="username" placeholder="johndoe" />
+                <input type="password" name="password" placeholder="********" />
+                <br>
+                <button>Signin User</button>
+            </form>
 
 
-        <p>
-            Don't have an Account ?
-            <a class="text-blue-400" href="/user/signup">Create One</a>
-        </p>
+            <p><a href="/user/forget-password">Forget Password ?</a></p>
+
+
+            <p>
+                Don't have an Account ?
+                <a class="text-blue-400" href="/user/signup">Create One</a>
+            </p>
+
+
+        </div>
         <%- include("partials/footer")%>

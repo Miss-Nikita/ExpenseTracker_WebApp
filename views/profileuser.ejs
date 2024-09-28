@@ -1,14 +1,15 @@
 <%- include("partials/header")%>
-    <%- include("partials/nav")%>
+<link rel="stylesheet" href="/stylesheets/profilepage.css">   
+ <%- include("partials/nav")%>
     <%= message%>
-        <div">
-            <h1 class="text-5xl">User Profile</h1>
+        <div"  class="profile-page">
+            <h1 >User Profile</h1>
 
-            <div class="flex gap-x-10">
-                <a class="text-blue-400" href="/user/signout">Signout</a>
-                <a class="text-blue-400" href="/user/reset-password">Reset Password</a>
-                <a class="text-blue-400" href="/user/delete-account">Delete Account</a>
-                 <a class="text-blue-400" href="/user/update">Update User</a>
+            <div class="links">
+                <a href="/user/signout">Signout</a>
+                <a  href="/user/reset-password">Reset Password</a>
+                <a  href="/user/delete-account">Delete Account</a>
+                 <a  href="/user/update">Update User</a>
             </div>
 
             </div>

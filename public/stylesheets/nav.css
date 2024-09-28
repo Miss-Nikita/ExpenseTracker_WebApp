@@ -6,15 +6,23 @@
 html , body{
     height: 100%;
     width: 100%;
-}
-
-
-.frontpage a{
+    /* background-color: seagreen; */
+    /* color: #fff; */
+    text-align: center;
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
-    gap: 20%;
-    color: rgb(71, 12, 231);
-    margin: 20px;
-    font-size: 30px;
 }
 
+.homepage {
+    color: seagreen;
+}
+.signup {
+    background-color: #fff;
+    text-align: center;
+    color: #000;
+    padding: 20px;
+    margin: 5px;
+
+}

@@ -1,5 +1,7 @@
 <%- include("partials/header")%>
+<link rel="stylesheet" href="/stylesheets/UpdateExpenses.css">
     <%- include("partials/nav")%>
+     <div class="update-expense-page">
         <br>
         <h1>Update Expense</h1>
 
@@ -11,5 +13,6 @@
             <input type="text" name="paymentmode" placeholder="Payment Mode" value="<%= expense.paymentmode%>" />
             <button>Edit Expense</button>
         </form>
+     </div>
 
         <%- include("partials/footer")%>

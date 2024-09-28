@@ -12,12 +12,12 @@ router.get('/', function (req, res, next) {
   });
 });
 
-router.get("/about", function (req, res, next) {
-  res.render("about", {
-    title: "Expense Tracker | About",
-    user: req.user
-  });
-});
+// router.get("/about", function (req, res, next) {
+//   res.render("about", {
+//     title: "Expense Tracker | About",
+//     user: req.user
+//   });
+// });
 
 
 router.get("/createsession", function (req, res, next) {

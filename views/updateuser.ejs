@@ -1,5 +1,7 @@
 <%- include("partials/header")%>
+<link rel="stylesheet" href="/stylesheets/UpdateUser.css">
     <%- include("partials/nav")%>
+
 
 
         <h1>Update User</h1>
@@ -14,10 +16,10 @@
         </form>
 
 
-        <hr class="m-auto w-[80%]" />
+        <!-- <hr class="m-auto w-[80%]" /> -->
 
 
-        <form action="/user/update" method="post">
+        <form class="update-form" action="/user/update" method="post">
             <input type="text" name="username" placeholder="johndoe" value="<%= user.username%>" />
             <input type="email" name="email" placeholder="john@doe.com" value="<%= user.email%>" />
             <button>Update User Details</button>
@@ -35,5 +37,6 @@
                 avatarForm.submit();
             });
         </script>
+    
         <!--  -->
         <%- include("partials/footer")%>

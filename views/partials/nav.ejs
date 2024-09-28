@@ -1,15 +1,16 @@
-<div class="frontpage">
-    <nav class="flex gap-2	bg-red-400 text-black ">
-
+<div >
+    <nav >
 
         <% if(user){ %>
-            <a class="" href="/user/profile">Home</a>
-            <a class=" " href="/expense/create">Log Expense</a>
-            <a class=" " href="/expense/show">Watch Expenses</a>
+          <div class="signup">
+            <a  href="/user/profile">Home</a>
+            <a  href="/expense/create">Log Expense</a>
+            <a  href="/expense/show">Watch Expenses</a>
+          </div>
         <%}else{ %>
-            <a class=" " href="/">Home</a>
+            <a class="homepage" href="/">Home</a>
         <% }%>
-            <a class=" " href="/about">About</a>
+            <!-- <a href="/about">About</a> -->
 
 
     </nav>
