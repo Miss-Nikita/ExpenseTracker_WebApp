@@ -5,9 +5,6 @@ const imagekit = require("../util/imagekit")
 
 const client = require('../util/cache.js')
 
-
-
-
 const { isLoggedIn } = require("../middlewares/auth.middleware");
 const upload = require("../middlewares/multimedia.middleware")
 const fs = require("fs")
@@ -145,16 +142,28 @@ router.get("/profile", isLoggedIn, async (req, res, next) => {
   // )
 
     const message = req.flash("success");
-
-    res.render("profileuser", {
-      title: "Expense Tracker | Profile",
-      user: req.user,
-      message,
-    });
+    if(req.user.emails){
+      const user=await userSchema.findOne({email:req.user.emails[0].value});
+      res.render("profileuser", {
+        title: "Expense Tracker | Profile Page",
+        user,
+        message,
+      });
+    }
+    else{
+      res.render("profileuser", {
+        title: "Expense Tracker | Profile Page",
+        user: req.user,
+        message
+      });
+    }
+    console.log(req.user);
   } catch (error) {
     next(error);
   }
 });
+
+
 
 router.get("/signout", isLoggedIn, async (req, res) => {
   req.logout(() => {
@@ -218,26 +227,6 @@ router.post("/update", isLoggedIn, async (req, res, next) => {
   }
 });
 
-
-
-
-
-// router.post(
-//   "/avatar",
-//   isLoggedIn,
-//   upload.single("avatar"),
-//   async (req, res,next) => {
-//     try {
-//       if (req.user.avatar != "default.png") {
-//         fs.unlinkSync(`public/images/${req.user.avatar}`);
-//       }
-//       req.user.avatar = req.file.filename;
-//       // await req.user.save();
-//       res.redirect("/user/update");
-//     } catch (error) {
-//       next(error);
-//     }
-//   })
 
 
 
@@ -305,18 +294,6 @@ router.get("/forget-password", async (req, res) => {
 });
 
 
-// router.post("/forget-password", async (req, res, next) => {
-//   try {
-//     const user = await UserSchema.findOne({ email: req.body.email });
-//     if (!user) return next(new Error("User not found!"));
-//     // send email to user with otp
-//     // and save the same otp to database
-//     res.redirect(`/user/forget-password/${user._id}`);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
 
 router.post("/forget-password", async (req, res, next) => {
   try {
@@ -352,20 +329,6 @@ router.get("/forget-password/:id", async (req, res) => {
     id: req.params.id,
   });
 });
-
-
-
-// router.post("/forget-password/:id", async (req, res, next) => {
-//   try {
-//     const user = await UserSchema.findById(req.params.id);
-//     // compare the req.body.otp with the otp in database
-//     // if matched redirect to password page else ERROR
-//     res.redirect(`/user/set-password/${user._id}`);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
 
 
 router.post("/forget-password/:id", async (req, res, next) => {
