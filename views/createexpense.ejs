@@ -1,26 +1,41 @@
-<%- include("partials/header")%>
-  <!-- <%- include("partials/nav")%> -->
-    <div class="bg-custom-dark-green to-black h-screen w-screen flex justify-center flex-col items-center  " >
-      <h1>Create Expenses</h1>
-      <br><br>
-      <!-- via-teal-900 -->
-      <!-- --tw-gradient-from: #a3e635 var(--tw-gradient-from-position);
-      --tw-gradient-to: rgb(163 230 53 / 0) var(--tw-gradient-to-position);
-      --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); -->
+<%- include("partials/header") %>
+<%- include("partials/nav") %>
 
-      <!-- bg-gradient-to-r from-gray-900 via-slate-700  to-black -->
-      <form action="/expense/create" class="p-8 bg-red-600" method="post">
-        <input type="text" name="title" placeholder="Title">
-        <br>
-        <input type="number" name="amount" placeholder="Amount">
-        <br>
-        <input type="text" name="category" placeholder="Category">
-        <br>
-        <input type="text" name="remark" placeholder="Remark">
-        <br>
-        <input type="text" name="paymentmode" placeholder="Payment Mode">
-        <br>
-        <button class="p-3 rounded bg-black text-white">Create Expense</button>
-      </form>
-    </div>
-    <%- include("partials/footer")%>
+<div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-50 to-blue-50 py-16 px-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-8">Create Expenses</h1>
+
+    <!-- Form Section -->
+    <form action="/expense/create" method="post" class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <!-- Title -->
+        <div class="mb-6">
+            <input type="text" name="title" placeholder="Title" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300" required>
+        </div>
+
+        <!-- Amount -->
+        <div class="mb-6">
+            <input type="number" name="amount" placeholder="Amount" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300" required>
+        </div>
+
+        <!-- Category -->
+        <div class="mb-6">
+            <input type="text" name="category" placeholder="Category" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300" required>
+        </div>
+
+        <!-- Remark -->
+        <div class="mb-6">
+            <input type="text" name="remark" placeholder="Remark" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300">
+        </div>
+
+        <!-- Payment Mode -->
+        <div class="mb-6">
+            <input type="text" name="paymentmode" placeholder="Payment Mode" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300">
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white font-semibold py-3 rounded-md hover:bg-teal-600 transition-transform transform hover:scale-105 duration-300">
+            Create Expense
+        </button>
+    </form>
+</div>
+
+<%- include("partials/footer") %>
