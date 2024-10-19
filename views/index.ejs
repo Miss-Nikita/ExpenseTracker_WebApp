@@ -1,8 +1,29 @@
-<%- include("partials/header")%>
-<link rel="stylesheet" href="stylesheets/index.css">
-  <%- include("partials/nav")%>
-    <div" class="getstart">
-      <!-- <h1 class="">Homepage</h1> -->
-      <a  href="/user/signin">Get Start</a>
-    </div>
-  <%- include("partials/footer")%>
+<%- include("partials/header") %>
+<%- include("partials/nav") %>
+
+<link rel="stylesheet" href="/stylesheets/animations.css">
+<!-- Hero Section -->
+<div class="min-h-screen w-full flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-green-50 to-blue-50 px-8 md:px-20 py-16">
+  <!-- Text Section -->
+  <div class="space-y-8 max-w-xl text-center md:text-left">
+    <h1 class="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tight">
+      Manage Your <br> Expenses Easily with <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-teal-400">ExisyFi</span>
+    </h1>
+    <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+      The easiest way to manage your finances. Get a complete view of where you can save, track your spending, detect fraud, and stay informed about rising subscription costs.
+    </p>
+    <a class="inline-block bg-gradient-to-r from-green-500 to-teal-400 hover:from-green-600 hover:to-teal-500 transition-transform transform hover:scale-105 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg" href="/user/signin">
+      Get Started
+    </a>
+  </div>
+
+  <!-- Image Section -->
+  <div class="mt-10 md:mt-0">
+    <img class="w-96 h-auto mx-auto md:ml-36 drop-shadow-xl transform transition-transform hover:scale-105 duration-300" src="https://media.istockphoto.com/id/1455947537/photo/financial-report-3d-icon-design.jpg?s=612x612&w=0&k=20&c=I4R5rtsNo3LAkFJKSTCLZr3YPp3LKg9HXfLP5FqAeg0=" alt="Invoice with coins">
+  </div>
+</div>
+
+<!-- Features Section -->
+
+
+<%- include("partials/footer") %>

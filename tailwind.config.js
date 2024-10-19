@@ -21,7 +21,9 @@ module.exports = {
     './views/**/*.ejs'
   ],
   theme: {
-    extend: {},
+    extend: {  backgroundImage: {
+      'custom-gradient': 'linear-gradient(90deg, rgba(30,31,32,1) 0%, rgba(94,159,147,1) 24%, rgba(29,43,41,1) 40%, rgba(30,31,32,1) 60%, rgba(30,31,32,1) 100%)',
+    },},
   },
   plugins: [],
 };

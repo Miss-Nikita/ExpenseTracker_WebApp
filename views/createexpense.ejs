@@ -1,10 +1,15 @@
 <%- include("partials/header")%>
-  <link rel="stylesheet" href="/stylesheets/CreateExpense.css">
-  <%- include("partials/nav")%>
-    <div class="create-expense">
+  <!-- <%- include("partials/nav")%> -->
+    <div class="bg-custom-dark-green to-black h-screen w-screen flex justify-center flex-col items-center  " >
       <h1>Create Expenses</h1>
+      <br><br>
+      <!-- via-teal-900 -->
+      <!-- --tw-gradient-from: #a3e635 var(--tw-gradient-from-position);
+      --tw-gradient-to: rgb(163 230 53 / 0) var(--tw-gradient-to-position);
+      --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); -->
 
-      <form action="/expense/create" method="post">
+      <!-- bg-gradient-to-r from-gray-900 via-slate-700  to-black -->
+      <form action="/expense/create" class="p-8 bg-red-600" method="post">
         <input type="text" name="title" placeholder="Title">
         <br>
         <input type="number" name="amount" placeholder="Amount">
@@ -15,7 +20,7 @@
         <br>
         <input type="text" name="paymentmode" placeholder="Payment Mode">
         <br>
-        <button>Log Expense</button>
+        <button class="p-3 rounded bg-black text-white">Create Expense</button>
       </form>
     </div>
     <%- include("partials/footer")%>

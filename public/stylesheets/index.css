@@ -6,21 +6,19 @@
 html , body{
     height: 100%;
     width: 100%;
-    background-color:#000;
+    
+    /* background-color:#000; */
 }
-/* div{
-    text-align: center;
-} */
 
-.getstart{
+
+/* .getstart{
     position: absolute;
     top: 50%;
     left: 10%;
     transform: translate(-50%,-50%);
     color: rgb(98, 172, 14);
     font-size: 30px;
-    /* padding: 30px; */
     border: 2px solid #fff;
    
 }
-
+  */
