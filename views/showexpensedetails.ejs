@@ -1,19 +1,146 @@
-<%- include("partials/header")%>
-    <%- include("partials/nav")%>
 
-    <br>
-    <h1>Expense Details</h1>
-    <br>
+<%- include("partials/header") %>
+<%- include("partials/nav") %>
 
-    <h1><%= expense.title %></h1>
-    <h1><%= expense.amount %></h1>
-    <h1><%= expense.category %></h1>
-    <h1><%= expense.remark %></h1>
-    <h1><%= expense.paymentmode %></h1>
+<!-- Background Animation -->
+<style>
+  body {
+    overflow: hidden; /* Prevent scroll bars */
+  }
 
+  @keyframes backgroundAnimation {
+    0% {
+      background-color: #f9f9f9; /* Light gray */
+    }
+    50% {
+      background-color: #e0f7fa; /* Light cyan */
+    }
+    100% {
+      background-color: #f9f9f9; /* Light gray */
+    }
+  }
 
-    <br>
-    <a href="/expense/delete/<%= expense._id%>">Delete</a>
-    <a href="/expense/update/<%= expense._id%>">Edit</a>
+  .animated-bg {
+    animation: backgroundAnimation 10s ease-in-out infinite;
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+  }
 
-<%- include("partials/footer")%>
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 64px); /* Adjust for navbar height */
+    padding: 20px; /* Padding for content */
+    overflow: hidden; /* Prevent overflow within the container */
+  }
+
+  /* Styling for the card containing details */
+  .detail-card {
+    background: linear-gradient(145deg, #ffffff, #e6e6e6); /* Gradient background */
+    border-radius: 20px; /* More rounded corners */
+    padding: 10px; /* Padding for content */
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1), -6px -6px 12px rgba(255, 255, 255, 0.7); /* Soft shadow */
+    transition: transform 0.3s; /* Transition effect */
+    margin-bottom: 20px; /* Spacing between cards */
+    width: 100%;
+    max-width: 500px; /* Limit width for better appearance */
+  }
+
+  .detail-card:hover {
+    transform: scale(1.02); /* Slight zoom effect on hover */
+  }
+
+  /* Title and Detail styles */
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2c3e50; /* Darker color */
+    margin-bottom: 20px;
+    text-align: center; /* Centered title */
+  }
+
+  .label {
+    font-weight: bold;
+    color: #34495e; /* Dark gray for labels */
+  }
+
+  .value {
+    color: #7f8c8d; /* Light gray for values */
+    margin-bottom: 15px; /* Spacing below values */
+  }
+
+  /* Button styles */
+  .button {
+    display: inline-block;
+    padding: 10px 20px; /* Padding for buttons */
+    border-radius: 10px; /* Rounded corners */
+    font-weight: bold;
+    text-align: center;
+    transition: transform 0.3s, background-color 0.3s;
+    text-decoration: none; /* Remove underline */
+  }
+
+  .delete-button {
+    background-color: #e74c3c; /* Red for delete */
+    color: white;
+  }
+
+  .edit-button {
+    background-color: #3498db; /* Blue for edit */
+    color: white;
+  }
+
+  .button:hover {
+    transform: translateY(-3px); /* Lift effect on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .title {
+      font-size: 1.5rem; /* Smaller title on mobile */
+    }
+  }
+</style>
+
+<!-- Expense Details Page -->
+<div class="animated-bg">
+  <div class="content-container">
+    <h1 class="title">Expense Details</h1>
+
+    <!-- Expense Detail Cards -->
+    <div class="detail-card">
+      <span class="label">Title:</span>
+      <span class="value"><%= expense.title %></span>
+    </div>
+    <div class="detail-card">
+      <span class="label">Amount:</span>
+      <span class="value">$<%= expense.amount.toFixed(2) %></span>
+    </div>
+    <div class="detail-card">
+      <span class="label">Category:</span>
+      <span class="value"><%= expense.category %></span>
+    </div>
+    <div class="detail-card">
+      <span class="label">Remark:</span>
+      <span class="value"><%= expense.remark %></span>
+    </div>
+    <div class="detail-card">
+      <span class="label">Payment Mode:</span>
+      <span class="value"><%= expense.paymentmode %></span>
+    </div>
+
+    <div class="flex justify-center mt-8 space-x-4">
+      <a href="/expense/delete/<%= expense._id %>" class="button delete-button">
+        Delete
+      </a>
+      <a href="/expense/update/<%= expense._id %>" class="button edit-button">
+        Edit
+      </a>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

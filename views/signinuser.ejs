@@ -23,7 +23,7 @@
     background: rgba(255, 255, 255, 0.7);
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    animation: float 6s ease-in-out infinite;
+    animation: float 6s ease-in-out infinite, rotate 10s linear infinite; /* Added rotation */
   }
 
   @keyframes float {
@@ -38,31 +38,140 @@
     }
   }
 
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
   /* Apply animation to the body */
   .animated-bg {
     animation: backgroundAnimation 8s ease-in-out infinite;
-    overflow: hidden;
   }
 
-  /* Hide overflow */
-  .overflow-hidden {
-    overflow: hidden;
+  body {
+    overflow: hidden; /* Prevent scrollbar on the body */
   }
+
+  .min-h-screen {
+    min-height: 100vh; /* Full height */
+    display: flex; /* Flexbox for centering content */
+    flex-direction: column; /* Column layout */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    overflow: hidden; /* This may be unnecessary */
+  }
+
+  /* Fade-in effect for the header */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  h1 {
+    animation: fadeIn 1s ease forwards; /* Fade in animation */
+  }
+
+  /* Form Styling */
+
+  /* Input Field Styling */
+  input {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding for inputs */
+    border: 2px solid #ccc; /* Border color */
+    border-radius: 10px; /* Rounded corners */
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Smooth transition */
+    font-size: 1rem; /* Consistent font size */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+  }
+
+  input:focus {
+    border-color: #4caf50; /* Green focus color */
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Focus shadow */
+    transform: scale(1.02); /* Slight scale up effect */
+  }
+
+  /* Button Styling */
+  button {
+    width: 100%;
+    background: linear-gradient(90deg, #4caf50, #80deea); /* Gradient button */
+    color: white;
+    font-weight: bold;
+    padding: 10px; /* Padding for button */
+    border-radius: 10px; /* Rounded corners */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor */
+    transition: background 0.3s, transform 0.3s; /* Smooth transition */
+    position: relative; /* Position for ripple effect */
+  }
+
+  button:hover {
+    background: linear-gradient(90deg, #80deea, #4caf50); /* Reverse gradient on hover */
+    transform: scale(1.05); /* Slight lift effect */
+  }
+
+  button:focus::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(0);
+    animation: ripple 0.6s linear forwards; /* Ripple effect */
+  }
+
+  @keyframes ripple {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  /* Success Message Animation */
+  #successMessage {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Include transform for slide in */
+    transform: translateY(20px); /* Start below */
+  }
+
+  #successMessage.visible {
+    opacity: 1; /* Fade in */
+    transform: translateY(0); /* Slide up */
+  }
+
+  /* Link Animation */
+  a {
+    transition: color 0.3s ease; /* Smooth color transition */
+  }
+
+  a:hover {
+    color: #2ecc71; /* Change color on hover */
+  }
+
 </style>
 
-
 <!-- Sign In Page -->
-<div
-  class="min-h-screen flex flex-col justify-center items-center animated-bg overflow-hidden px-6 md:px-5 py-10 relative"
->
-  <h1 class="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in">
+<div class="min-h-screen flex flex-col justify-center items-center animated-bg overflow-hidden px-6 md:px-5 py-10 relative">
+  <h1 class="text-5xl font-extrabold text-gray-900 mb-6">
     Sign In User
   </h1>
 
   <form
     action="/user/signin"
     method="post"
-    class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md transform transition-transform hover:scale-105 duration-300"
+    class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md"
   >
     <div class="mb-6">
       <input
@@ -83,23 +192,23 @@
       />
     </div>
     <button
-      class="w-full bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 transition-transform transform hover:scale-110 text-white px-4 py-2 rounded-lg text-lg font-semibold shadow-md"
+      class="text-lg font-semibold shadow-md"
     >
       Sign In
     </button>
   </form>
 
-  <p class="mt-4 text-gray-900 animate-fade-in">
-    <a href="/user/forget-password" class="underline hover:text-teal-600"
-      >Forgot Password?</a
-    >
+  <p class="mt-4 text-gray-900">
+    <a href="/user/forget-password" class="underline hover:text-teal-600">
+      Forgot Password?
+    </a>
   </p>
 
-  <p class="mt-2 text-gray-900 animate-fade-in">
+  <p class="mt-2 text-gray-900">
     Don't have an Account?
-    <a class="text-green-500 hover:text-green-400" href="/user/signup"
-      >Create One</a
-    >
+    <a class="text-green-500 hover:text-green-400" href="/user/signup">
+      Create One
+    </a>
   </p>
 
   <div id="successMessage" class="hidden mt-4 text-green-600 text-lg">
@@ -117,3 +226,18 @@
 </div>
 
 <%- include("partials/footer") %>
+
+
+
+
+
+
+
+
+
+
+<!-- form {
+  opacity: 0; /* Start invisible for fade-in */
+  animation: fadeIn 1.5s ease forwards; /* Fade in animation */
+  animation-delay: 0.5s; /* Delay for form */
+} -->

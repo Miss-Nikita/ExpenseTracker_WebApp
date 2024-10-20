@@ -1,0 +1,32 @@
+<%- include("partials/header") %>
+<%- include("partials/nav") %>
+
+<!-- Watch Expenses Section -->
+<div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-50 to-blue-50 py-16 px-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-8">Watch Expenses</h1>
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        <!-- Expenses List -->
+        <ul class="divide-y divide-gray-300">
+            <% user.expenses.forEach(function(expense) { %>
+                <li class="py-4 flex justify-between items-center">
+                    <span class="text-lg font-semibold text-gray-700"><%= expense.title %></span>
+                    <a href="/expense/details/<%= expense._id %>" class="text-teal-500 hover:text-teal-700 font-semibold transition duration-300">
+                        Details
+                    </a>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+</div>
+
+<%- include("partials/footer") %>
+
+
+
+
+
+
+
+
+they show scroll bar because of nav bar show hide the scroll bar this is the code  

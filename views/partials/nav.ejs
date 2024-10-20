@@ -3,8 +3,8 @@
         <!-- Logo with Hover Animation -->
         <div>
             <a href="/" class="text-white text-2xl font-bold tracking-wider transition-transform transform hover:scale-110">
-                <img src="/path-to-logo.png" alt="MyApp Logo" class="h-10 w-10 inline-block mr-2">
-                MyApp
+                <img src="/images/logo1.png" alt="MyApp Logo" class="h-10 w-10 inline-block mr-2 logo-animation">
+                Expense Tracker
             </a>
         </div>
 
@@ -43,6 +43,15 @@
         color: #cbd5e1; /* Different color for active link */
         background-color: rgba(255, 255, 255, 0.3); /* Subtle background for active link */
         border-bottom: 2px solid white; /* Underline effect */
+    }
+
+    /* Logo Animation */
+    .logo-animation {
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .logo-animation:hover {
+        transform: rotate(360deg) scale(1.1); /* Full rotation and slight scaling on hover */
     }
 
     /* Responsive Design */

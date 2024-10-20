@@ -1,41 +1,238 @@
 <%- include("partials/header") %>
 <%- include("partials/nav") %>
+<link rel="stylesheet" href="/stylesheets/animations.css" />
+<style>
+  /* Prevent Scrollbar on Body */
+  body {
+    overflow: hidden; /* Hide scrollbar */
+  }
 
-<div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-50 to-blue-50 py-16 px-8">
-    <h1 class="text-4xl font-bold text-gray-900 mb-8">Create Expenses</h1>
+  /* Background Animation */
+  @keyframes backgroundAnimation {
+    0% {
+      background-color: #e5faf2; /* light green */
+    }
+    50% {
+      background-color: #f0f9ff; /* light blue */
+    }
+    100% {
+      background-color: #e5faf2; /* light green */
+    }
+  }
 
-    <!-- Form Section -->
-    <form action="/expense/create" method="post" class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <!-- Title -->
-        <div class="mb-6">
-            <input type="text" name="title" placeholder="Title" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300" required>
-        </div>
+  /* Floating Notes Animation */
+  .note {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    animation: float 6s ease-in-out infinite;
+  }
 
-        <!-- Amount -->
-        <div class="mb-6">
-            <input type="number" name="amount" placeholder="Amount" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300" required>
-        </div>
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
 
-        <!-- Category -->
-        <div class="mb-6">
-            <input type="text" name="category" placeholder="Category" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300" required>
-        </div>
+  /* Apply animation to the body */
+  .animated-bg {
+    animation: backgroundAnimation 8s ease-in-out infinite;
+    overflow: hidden; /* Prevent scrollbar */
+  }
 
-        <!-- Remark -->
-        <div class="mb-6">
-            <input type="text" name="remark" placeholder="Remark" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300">
-        </div>
+  .min-h-screen {
+    min-height: 100vh; /* Full height */
+    display: flex; /* Flexbox for centering content */
+    flex-direction: column; /* Column layout */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    overflow: hidden;
+  }
 
-        <!-- Payment Mode -->
-        <div class="mb-6">
-            <input type="text" name="paymentmode" placeholder="Payment Mode" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300">
-        </div>
+  h1 {
+    font-size: 2.5rem; /* Larger font size */
+    font-weight: 800; /* Bold font weight */
+    color: #2c3e50; /* Darker text color */
+    margin-bottom: 15px; /* Increased space below the title */
+    animation: fadeIn 1s ease; /* Fade in effect */
+    margin-top: -60px;
+  }
 
-        <!-- Submit Button -->
-        <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white font-semibold py-3 rounded-md hover:bg-teal-600 transition-transform transform hover:scale-105 duration-300">
-            Create Expense
-        </button>
-    </form>
+  /* Fade in animation for the title */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Form Styling */
+  .form-container {
+    background: rgba(255, 255, 255, 0.9); /* Slight transparency */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    border-radius: 20px; /* More rounded corners */
+    padding: 30px; /* Increased padding */
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+    width: 100%;
+    max-width: 600px; /* Max width for the form */
+    transform: translateY(0); /* Initial position for animation */
+    transition: transform 0.3s; /* Smooth scale on hover */
+    animation: slideIn 0.5s ease-in-out; /* Slide in animation */
+  }
+
+  /* Slide in animation for the form */
+  @keyframes slideIn {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Input Field Styling */
+  input {
+    width: 100%; /* Full width */
+    padding: 8px; /* Padding for inputs */
+    border: 2px solid #ccc; /* Border color */
+    border-radius: 10px; /* Rounded corners */
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Smooth transition */
+    margin-bottom: 16px; /* Space between inputs */
+    font-size: 1rem; /* Consistent font size */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+    opacity: 0; /* Start hidden for animation */
+    animation: fadeInUp 0.5s forwards; /* Fade in from bottom */
+  }
+
+  @keyframes fadeInUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Input Focus Animation */
+  input:focus {
+    border-color: #4caf50; /* Green focus color */
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Focus shadow */
+    transform: scale(1.02); /* Slight scale on focus */
+  }
+
+  button {
+    width: 100%;
+    background: linear-gradient(90deg, #4caf50, #80deea); /* Gradient button */
+    color: white;
+    font-weight: bold;
+    padding: 10px; /* Padding for button */
+    border-radius: 10px; /* Rounded corners */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor */
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s; /* Smooth transition */
+    position: relative; /* Position for pseudo-element */
+    overflow: hidden; /* Hide overflow for effect */
+    opacity: 0; /* Start hidden for animation */
+    animation: fadeInUp 0.5s forwards 0.3s; /* Fade in from bottom with delay */
+  }
+
+  button:hover {
+    background: linear-gradient(90deg, #80deea, #4caf50); /* Reverse gradient on hover */
+    transform: scale(1.05); /* Slight lift effect */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem; /* Smaller title on mobile */
+    }
+
+    .form-container {
+      padding: 20px; /* Adjust padding for mobile */
+    }
+  }
+</style>
+
+<!-- Create Expenses Page -->
+<div class="min-h-screen animated-bg overflow-hidden px-6 md:px-16 py-8 relative">
+  <h1>Create Expenses</h1>
+
+  <form action="/expense/create" method="post" class="form-container">
+    <!-- Title -->
+    <div>
+      <input type="text" name="title" placeholder="Title" required />
+    </div>
+
+    <!-- Amount -->
+    <div>
+      <input type="number" name="amount" placeholder="Amount" required />
+    </div>
+
+    <!-- Category -->
+    <div>
+      <input type="text" name="category" placeholder="Category" required />
+    </div>
+
+    <!-- Remark -->
+    <div>
+      <input type="text" name="remark" placeholder="Remark" />
+    </div>
+
+    <!-- Payment Mode -->
+    <div>
+      <input type="text" name="paymentmode" placeholder="Payment Mode" />
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit">Create Expense</button>
+  </form>
+
+  <div id="successMessage" class="hidden mt-4 text-green-600 text-lg">
+    Expense created successfully! Redirecting...
+  </div>
 </div>
+
+<!-- Floating Notes -->
+<div class="absolute inset-0 pointer-events-none">
+  <div class="note" style="top: 20%; left: 10%; animation-delay: 0s"></div>
+  <div class="note" style="top: 30%; right: 15%; animation-delay: 2s"></div>
+  <div class="note" style="top: 50%; left: 25%; animation-delay: 4s"></div>
+  <div class="note" style="top: 70%; right: 20%; animation-delay: 1s"></div>
+  <div class="note" style="top: 80%; left: 30%; animation-delay: 3s"></div>
+</div>
+
+<script>
+// Add event listener to the form
+
+
+  // Simulate a successful expense creation
+  document.getElementById("successMessage").classList.remove("hidden");
+
+  // Redirect after a short delay
+  setTimeout(() => {
+    window.location.href = "/expense"; // Redirect to expense list page
+  }, 2000); // Adjust the delay as needed
+
+
+</script>
 
 <%- include("partials/footer") %>

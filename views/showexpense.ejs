@@ -2,22 +2,58 @@
 <%- include("partials/nav") %>
 
 <!-- Watch Expenses Section -->
-<div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-50 to-blue-50 py-16 px-8">
-    <h1 class="text-4xl font-bold text-gray-900 mb-8">Watch Expenses</h1>
+<div class="min-h-screen flex flex-col items-center justify-start bg-gradient-to-r from-green-50 to-blue-50 py-16 px-4">
+    <h1 class="text-5xl font-extrabold text-gray-900 mb-12">Your Expenses</h1>
 
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+    <div class="w-full max-w-3xl space-y-6">
         <!-- Expenses List -->
-        <ul class="divide-y divide-gray-300">
-            <% user.expenses.forEach(function(expense) { %>
-                <li class="py-4 flex justify-between items-center">
-                    <span class="text-lg font-semibold text-gray-700"><%= expense.title %></span>
-                    <a href="/expense/details/<%= expense._id %>" class="text-teal-500 hover:text-teal-700 font-semibold transition duration-300">
-                        Details
+        <% user.expenses.forEach(function(expense) { %>
+            <div class="bg-white p-6 rounded-lg shadow-md flex justify-between items-center transition-transform transform hover:scale-105">
+                <div>
+                    <span class="text-xl font-semibold text-gray-800"><%= expense.title %></span>
+                    <p class="text-gray-500 text-sm">Date: <%= expense.date %></p>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-lg font-bold text-teal-600">$<%= expense.amount %></span>
+                    <a href="/expense/details/<%= expense._id %>" class="text-teal-500 hover:text-teal-700 font-semibold transition duration-300 mt-2">
+                        View Details
                     </a>
-                </li>
-            <% }) %>
-        </ul>
+                </div>
+            </div>
+        <% }) %>
     </div>
 </div>
 
 <%- include("partials/footer") %>
+
+<!-- Styles -->
+<style>
+    /* Custom Styles for the Watch Expenses Page */
+    h1 {
+        font-family: 'Poppins', sans-serif; /* Change font family for title */
+        letter-spacing: -0.5px;
+    }
+
+    .bg-white {
+        transition: transform 0.2s, box-shadow 0.2s; /* Transition for card hover effect */
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2.5rem; /* Smaller font size for smaller screens */
+        }
+    }
+
+    /* Styling for individual expenses */
+    .bg-white:hover {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    }
+
+    /* Responsive adjustments for expense items */
+    @media (max-width: 640px) {
+        .bg-white {
+            padding: 4; /* Adjust padding for smaller screens */
+        }
+    }
+</style>
