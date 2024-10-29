@@ -50,15 +50,16 @@
     flex-direction: column; /* Column layout */
     justify-content: center; /* Center vertically */
     align-items: center; /* Center horizontally */
+    
   }
 
   /* Spinner and other styles remain the same */
 </style>
 
 <!-- Signup Page -->
-<div class="min-h-screen flex flex-col justify-center items-center animated-bg overflow-hidden px-8 md:px-16 py-10 relative">
+<div class="min-h-screen flex flex-col justify-center items-center animated-bg overflow-hidden px-8 md:px-16 py-10 z-50 relative">
   <h1 class="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in">Signup User</h1>
-  <form id="signupForm" action="/user/signup" method="post" class="bg-white rounded-lg shadow-lg p-7 mb-4 w-full max-w-md transform transition-transform hover:scale-105 duration-300">
+  <form id="signupForm" action="/user/signup" method="post" class="bg-white rounded-lg shadow-lg p-7 mb-4 w-full max-w-md transform transition-transform hover:scale-105 z-50 duration-300">
     <div class="mb-5">
       <input type="text" id="username" name="username" placeholder="Username" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 transition-transform duration-300 hover:shadow-lg" required />
     </div>

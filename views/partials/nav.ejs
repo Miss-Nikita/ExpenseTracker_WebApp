@@ -1,4 +1,4 @@
-<div class="w-full bg-gradient-to-r from-green-500 to-teal-500 shadow-lg relative z-10">
+<div class="w-full bg-gradient-to-r from-green-500 to-teal-500 shadow-lg fixed top-0 left-0 right-0 z-50">
     <nav class="container mx-auto flex justify-between items-center py-2 px-8">
         <!-- Logo with Hover Animation -->
         <div>
@@ -21,28 +21,31 @@
     </nav>
 </div>
 
+<!-- Add this spacer div right after the nav to prevent content from jumping up -->
+<div class="h-16"></div>
+
 <style>
     /* Custom Navigation Link Styles */
     .nav-link {
         color: white;
-        font-size: 1.125rem; /* 18px */
-        font-weight: 600; /* Semi-bold */
-        padding: 0.5rem 0.75rem; /* Padding for link */
-        transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease; /* Added background transition */
-        border-radius: 0.375rem; /* Rounded corners */
+        font-size: 1.125rem;
+        font-weight: 600;
+        padding: 0.5rem 0.75rem;
+        transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+        border-radius: 0.375rem;
     }
 
     .nav-link:hover {
-        color: #cbd5e1; /* Light gray color on hover */
-        transform: translateY(-2px); /* Slightly lifts the link on hover */
-        background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+        color: #cbd5e1;
+        transform: translateY(-2px);
+        background-color: rgba(255, 255, 255, 0.2);
     }
 
     /* Active Link Style */
     .nav-link.active {
-        color: #cbd5e1; /* Different color for active link */
-        background-color: rgba(255, 255, 255, 0.3); /* Subtle background for active link */
-        border-bottom: 2px solid white; /* Underline effect */
+        color: #cbd5e1;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-bottom: 2px solid white;
     }
 
     /* Logo Animation */
@@ -51,13 +54,13 @@
     }
 
     .logo-animation:hover {
-        transform: rotate(360deg) scale(1.1); /* Full rotation and slight scaling on hover */
+        transform: rotate(360deg) scale(1.1);
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
         .nav-link {
-            font-size: 1rem; /* Decrease font size for smaller screens */
+            font-size: 1rem;
         }
     }
 </style>

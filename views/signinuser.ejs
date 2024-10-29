@@ -163,7 +163,7 @@
 </style>
 
 <!-- Sign In Page -->
-<div class="min-h-screen flex flex-col justify-center items-center animated-bg overflow-hidden px-6 md:px-5 py-10 relative">
+<div class="min-h-screen flex flex-col justify-center items-center animated-bg overflow-hidden px-6 md:px-5 py-10 relative ">
   <h1 class="text-5xl font-extrabold text-gray-900 mb-6">
     Sign In User
   </h1>
@@ -171,7 +171,7 @@
   <form
     action="/user/signin"
     method="post"
-    class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md"
+    class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md z-50"
   >
     <div class="mb-6">
       <input
@@ -197,6 +197,10 @@
       Sign In
     </button>
   </form>
+
+
+
+  
 
   <p class="mt-4 text-gray-900">
     <a href="/user/forget-password" class="underline hover:text-teal-600">

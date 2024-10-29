@@ -91,6 +91,7 @@
     transform: translateY(0); /* Initial position for animation */
     transition: transform 0.3s; /* Smooth scale on hover */
     animation: slideIn 0.5s ease-in-out; /* Slide in animation */
+    z-index: 1000;
   }
 
   /* Slide in animation for the form */
@@ -106,7 +107,7 @@
   }
 
   /* Input Field Styling */
-  input {
+  input, select {
     width: 100%; /* Full width */
     padding: 8px; /* Padding for inputs */
     border: 2px solid #ccc; /* Border color */
@@ -132,7 +133,7 @@
   }
 
   /* Input Focus Animation */
-  input:focus {
+  input:focus, select:focus {
     border-color: #4caf50; /* Green focus color */
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Focus shadow */
     transform: scale(1.02); /* Slight scale on focus */
@@ -189,7 +190,15 @@
 
     <!-- Category -->
     <div>
-      <input type="text" name="category" placeholder="Category" required />
+      <select name="category" required>
+        <option value="" disabled selected>Select Category</option>
+        <option value="Food">Food</option>
+        <option value="Transportation">Transportation</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Utilities">Utilities</option>
+        <option value="Other">Other</option>
+      </select>
     </div>
 
     <!-- Remark -->
@@ -199,7 +208,15 @@
 
     <!-- Payment Mode -->
     <div>
-      <input type="text" name="paymentmode" placeholder="Payment Mode" />
+      <select name="paymentmode" required>
+        <option value="" disabled selected>Select Payment Mode</option>
+        <option value="Cash">Cash</option>
+        <option value="Credit Card">Credit Card</option>
+        <option value="Debit Card">Debit Card</option>
+        <option value="UPI">UPI</option>
+        <option value="Net Banking">Net Banking</option>
+        <option value="Other">Other</option>
+      </select>
     </div>
 
     <!-- Submit Button -->
@@ -220,19 +237,6 @@
   <div class="note" style="top: 80%; left: 30%; animation-delay: 3s"></div>
 </div>
 
-<script>
-// Add event listener to the form
 
-
-  // Simulate a successful expense creation
-  document.getElementById("successMessage").classList.remove("hidden");
-
-  // Redirect after a short delay
-  setTimeout(() => {
-    window.location.href = "/expense"; // Redirect to expense list page
-  }, 2000); // Adjust the delay as needed
-
-
-</script>
 
 <%- include("partials/footer") %>

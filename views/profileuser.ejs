@@ -1,112 +1,326 @@
+
 <%- include("partials/header") %>
-<link rel="stylesheet" href="/stylesheets/animations.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+<!-- Add this block for the flash message -->
+<% if (messages && Object.keys(messages).length > 0) { %>
+  <% Object.keys(messages).forEach(function(type) { %>
+    <% if (messages[type].length > 0) { %>
+      <div id="flash-message" class="flash-message <%= type %>">
+        <div class="flash-content">
+          <i class="flash-icon fas fa-<%= 
+            type === 'success' ? 'check-circle' : 
+            type === 'error' ? 'times-circle' : 
+            type === 'info' ? 'info-circle' : 
+            'exclamation-circle' 
+          %>"></i>
+          <span class="flash-text"><%= messages[type] %></span>
+        </div>
+      </div>
+    <% } %>
+  <% }); %>
+<% } %>
 
 <style>
-  /* Background Animation */
-  @keyframes backgroundAnimation {
-      0% { background-color: #e5faf2; }
-      50% { background-color: #f0f9ff; }
-      100% { background-color: #e5faf2; }
+  /* Flash Message Styles */
+  .flash-message {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    min-width: 300px;
+    max-width: 80%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideDown 0.4s ease-out, fadeOut 0.5s ease-in 4s forwards;
   }
 
-  /* Floating Notes Animation */
-  .note {
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-      animation: float 6s ease-in-out infinite;
+  .flash-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0); }
+  .flash-icon {
+    font-size: 18px;
   }
 
-  /* Apply animation to the body */
-  .animated-bg {
-      animation: backgroundAnimation 8s ease-in-out infinite;
-      min-height: 100vh; /* Ensure it takes the full viewport height */
-      height: 100%;
-      overflow: hidden;
+  /* Message Types */
+  .flash-message.success {
+    background-color: #E8F5E9;
+    color: #2E7D32;
   }
 
-  /* Profile Page Styles */
-  .profile-page {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      text-align: center;
+  .flash-message.error {
+    background-color: #FFEBEE;
+    color: #C62828;
   }
 
-  .profile-page h1 {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #2c3e50;
-      margin-bottom: 20px;
+  .flash-message.info {
+    background-color: #E3F2FD;
+    color: #1565C0;
   }
 
-  .profile-page .links {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+  .flash-message.warning {
+    background-color: #FFF3E0;
+    color: #EF6C00;
   }
 
-  .profile-page a {
-      display: block;
-      padding: 12px;
-      background-color: #2ecc71;
-      color: white;
-      text-align: center;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: transform 0.3s, background-color 0.3s;
+  @keyframes slideDown {
+    from {
+      transform: translate(-50%, -100px);
+      opacity: 0;
+    }
+    to {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
   }
 
-  .profile-page a:hover {
-      background-color: #27ae60;
-      transform: scale(1.05);
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
   }
 
-  /* Hide the scrollbar */
+  /* Main Page Styles */
   body {
-      overflow: hidden; /* Disable the scrollbar */
-      margin: 0;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
+  .profile-container {
+    flex-grow: 1;
+    display: flex;
+    padding-top: 70px;
+  }
+
+  /* Sidebar Styles */
+  .sidebar {
+    width: 280px;
+    background: white;
+    margin-left: 20px;
+    border-radius: 12px;
+    padding: 30px;
+    height: fit-content;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .profile-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 600;
+    margin-right: 15px;
+  }
+
+  .profile-info {
+    flex-grow: 1;
+  }
+
+  .profile-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 5px 0;
+  }
+
+  .profile-email {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+  }
+
+  /* Main Content Styles */
+  .main-content {
+    flex-grow: 1;
+    padding: 0 20px 20px 20px;
+  }
+
+  .welcome-message {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 25px;
+    padding: 0 10px;
+  }
+
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .action-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  .action-icon {
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+
+  .action-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+  }
+
+  .action-description {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+
+  /* Sidebar Menu */
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar-menu li {
+    margin-bottom: 8px;
+  }
+
+  .sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #666;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar-menu a:hover {
+    background-color: #f5f5f5;
+    color: #4CAF50;
+  }
+
+  .sidebar-menu i {
+    margin-right: 12px;
+    font-size: 18px;
+  }
+
+  /* Status Indicator */
+  .profile-status {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+
+  .status-indicator {
+    width: 8px;
+    height: 8px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
 </style>
 
 <%- include("partials/nav") %>
 
-<!-- Profile Page -->
-<div class="min-h-screen flex flex-col justify-center items-center animated-bg overflow-hidden px-6 md:px-20 py-16 relative">
-    <h1 class="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in">User Profile</h1>
-
-    <div class="profile-page">
-        <h1>Welcome, <%= user.username %>!</h1>
-
-        <div class="links">
-            <a href="/user/signout">Sign Out</a>
-            <a href="/user/reset-password">Reset Password</a>
-            <a href="/user/delete-account">Delete Account</a>
-            <a href="/user/update">Update User Information</a>
+<div class="profile-container">
+  <div class="sidebar">
+    <div>
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <%= user.username.charAt(0).toUpperCase() %>
         </div>
+        <div class="profile-info">
+          <h1 class="profile-name"><%= user.username %></h1>
+          <p class="profile-email"><%= user.email %></p>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/user/profile"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="/expense/create"><i class="fas fa-plus-circle"></i> Log Expense</a></li>
+        <li><a href="/expense/show"><i class="fas fa-list-alt"></i> Watch Expenses</a></li>
+      </ul>
     </div>
-
-    <!-- Floating Notes -->
-    <div class="absolute inset-0 pointer-events-none">
-        <div class="note" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
-        <div class="note" style="top: 30%; right: 15%; animation-delay: 2s;"></div>
-        <div class="note" style="top: 50%; left: 25%; animation-delay: 4s;"></div>
-        <div class="note" style="top: 70%; right: 20%; animation-delay: 1s;"></div>
-        <div class="note" style="top: 80%; left: 30%; animation-delay: 3s;"></div>
+    <div class="profile-status">
+      <span class="status-indicator"></span>
+      <span>Online</span>
     </div>
+  </div>
+  <div class="main-content">
+    <h2 class="welcome-message">Welcome back, <%= user.username %>!</h2>
+    <div class="action-grid">
+      <a href="/user/update" class="action-card update-profile">
+        <div class="action-icon"><i class="fas fa-user-edit"></i></div>
+        <h3 class="action-title">Update Profile</h3>
+        <p class="action-description">Modify your account information</p>
+      </a>
+      <a href="/user/reset-password" class="action-card reset-password">
+        <div class="action-icon"><i class="fas fa-key"></i></div>
+        <h3 class="action-title">Reset Password</h3>
+        <p class="action-description">Change your account password</p>
+      </a>
+      <a href="/user/signout" class="action-card sign-out">
+        <div class="action-icon"><i class="fas fa-sign-out-alt"></i></div>
+        <h3 class="action-title">Sign Out</h3>
+        <p class="action-description">Log out of your account</p>
+      </a>
+      <a href="/user/delete-account" class="action-card delete-account">
+        <div class="action-icon"><i class="fas fa-user-times"></i></div>
+        <h3 class="action-title">Delete Account</h3>
+        <p class="action-description">Permanently remove your account</p>
+      </a>
+    </div>
+  </div>
 </div>
 
 <%- include("partials/footer") %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const flashMessage = document.getElementById('flash-message');
+    if (flashMessage) {
+      setTimeout(() => {
+        flashMessage.style.animation = 'fadeOut 0.5s ease-in forwards';
+        setTimeout(() => {
+          flashMessage.remove();
+        }, 500);
+      }, 4000);
+    }
+  });
+</script>

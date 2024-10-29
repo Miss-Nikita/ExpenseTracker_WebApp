@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const UserSchema = require('../models/user.schema')
+const UserSchema = require('../models/user.schema.js')
 const imagekit = require("../util/imagekit")
 
 const client = require('../util/cache.js')
@@ -14,6 +14,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const sendEmail = require("../config/email")
+const path = require("path")
 
 
 passport.use(new LocalStrategy(UserSchema.authenticate()));
@@ -109,7 +110,7 @@ router.get("/signin", async (req, res) => {
 });
 
 
-router.post("/signin", passport.authenticate("local"), async (req, res) => {
+router.post("/signin", passport.authenticate("local"), async (req, res, next) => {
   try {
     req.flash("success", "Successfully LoggedIn!");
     res.redirect("/user/profile");
@@ -132,31 +133,21 @@ router.post("/signin", passport.authenticate("local"), async (req, res) => {
 
 router.get("/profile", isLoggedIn, async (req, res, next) => {
   try {
+    const messages = req.flash();  // Get all flash messages
+    let user;
 
-
-  //   sendEmail(
-  //     'bisennikita770@gmail.com',
-  //     "welcome",
-  //     "",
-  //     `<h1>hello from server</h1>`
-  // )
-
-    const message = req.flash("success");
-    if(req.user.emails){
-      const user=await userSchema.findOne({email:req.user.emails[0].value});
-      res.render("profileuser", {
-        title: "Expense Tracker | Profile Page",
-        user,
-        message,
-      });
+    if (req.user.emails) {
+      user = await UserSchema.findOne({ email: req.user.emails[0].value });
+    } else {
+      user = req.user;
     }
-    else{
-      res.render("profileuser", {
-        title: "Expense Tracker | Profile Page",
-        user: req.user,
-        message
-      });
-    }
+
+    res.render("profileuser", {
+      title: "Expense Tracker | Profile Page",
+      user,
+      messages  // Pass all messages to the view
+    });
+
     console.log(req.user);
   } catch (error) {
     next(error);
@@ -197,10 +188,18 @@ router.get("/delete-account", isLoggedIn, async (req, res, next) => {
     // await UserSchema.findByIdAndDelete(req.user._id);
     // code to delete profile pic
 
+
+    console.log("about to delete user");
+
     const user = await UserSchema.findByIdAndDelete(req.user._id);
-    if (user.avatar != "default.jpg") {
-      fs.unlinkSync(`public/images/${user.avatar}`);
-    }
+
+    console.log("user deleted");
+
+    // if (user.avatar.url != "public/images/default.jpg") {
+    //   fs.unlinkSync( path.join(__dirname, user.avatar.url));
+    // }
+
+  
 
     // code to delete all relaated expenses
     res.redirect("/user/signin");
@@ -374,4 +373,5 @@ router.post("/set-password/:id", async (req, res, next) => {
 
 
 module.exports = router;
+
 

@@ -26,8 +26,8 @@ const userSchema = new mongoose.Schema({
             type:
             Object, default: {
                 fileId: "",
-                url: "public/images/default.avif",
-                thumbnailUrl: "public/images/default.avif",
+                url: "public/images/default.jpg",
+                thumbnailUrl: "public/images/default.jpg",
             },
     },
     expenses:

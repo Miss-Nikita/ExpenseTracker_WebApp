@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 
+// Create a transporter using OAuth2
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -20,23 +21,27 @@ transporter.verify((error, success) => {
   }
 });
 
-
 // Function to send email
 const sendEmail = async (to, subject, text, html) => {
-    try {
-      const info = await transporter.sendMail({
-        from: `ExpenseTrackerweb" <${process.env.EMAIL_USER}>`, // sender address
-        to, // list of receivers
-        subject, // Subject line
-        text, // plain text body
-        html, // html body
-      });
-  
-      console.log('Message sent: %s', info.messageId);
+  try {
+    const mailOptions = {
+      from: `"ExpenseTrackerweb" <${process.env.EMAIL_USER}>`, // sender address
+      to, // list of receivers
+      subject, // Subject line
+      text, // plain text body
+      html, // html body
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    
+    console.log('Message sent: %s', info.messageId);
+    if (nodemailer.getTestMessageUrl(info)) {
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    } catch (error) {
-      console.error('Error sending email:', error);
     }
-  };
-  
-  module.exports = sendEmail;
+  } catch (error) {
+    console.error('Error sending email:', error);
+    // Optional: You can handle specific errors here, like logging to a service or retrying.
+  }
+};
+
+module.exports = sendEmail;

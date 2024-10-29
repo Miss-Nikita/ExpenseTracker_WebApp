@@ -1,146 +1,95 @@
-
 <%- include("partials/header") %>
 <%- include("partials/nav") %>
 
-<!-- Background Animation -->
-<style>
-  body {
-    overflow: hidden; /* Prevent scroll bars */
-  }
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Expense Details</h1>
+            <p class="text-gray-500 mt-2">View and manage your expense information</p>
+        </div>
 
-  @keyframes backgroundAnimation {
-    0% {
-      background-color: #f9f9f9; /* Light gray */
-    }
-    50% {
-      background-color: #e0f7fa; /* Light cyan */
-    }
-    100% {
-      background-color: #f9f9f9; /* Light gray */
-    }
-  }
+        <!-- Main Card -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <!-- Top Gradient Bar -->
+            <div class="h-2 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
 
-  .animated-bg {
-    animation: backgroundAnimation 10s ease-in-out infinite;
-    height: 100vh; /* Full viewport height */
-    width: 100vw; /* Full viewport width */
-  }
+            <!-- Content -->
+            <div class="p-6">
+                <!-- Amount Display -->
+                <div class="text-center mb-8">
+                    <p class="text-sm font-medium text-gray-500">Total Amount</p>
+                    <p class="text-4xl font-bold text-gray-900 mt-1">
+                        $<%= expense.amount.toFixed(2) %>
+                    </p>
+                </div>
 
-  .content-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 64px); /* Adjust for navbar height */
-    padding: 20px; /* Padding for content */
-    overflow: hidden; /* Prevent overflow within the container */
-  }
+                <!-- Details Grid -->
+                <div class="grid gap-6 mb-8">
+                    <!-- Title -->
+                    <div class="bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-colors">
+                        <p class="text-sm font-medium text-gray-500 mb-1">Title</p>
+                        <p class="text-lg font-medium text-gray-900"><%= expense.title %></p>
+                    </div>
 
-  /* Styling for the card containing details */
-  .detail-card {
-    background: linear-gradient(145deg, #ffffff, #e6e6e6); /* Gradient background */
-    border-radius: 20px; /* More rounded corners */
-    padding: 10px; /* Padding for content */
-    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1), -6px -6px 12px rgba(255, 255, 255, 0.7); /* Soft shadow */
-    transition: transform 0.3s; /* Transition effect */
-    margin-bottom: 20px; /* Spacing between cards */
-    width: 100%;
-    max-width: 500px; /* Limit width for better appearance */
-  }
+                    <!-- Category -->
+                    <div class="bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-colors">
+                        <p class="text-sm font-medium text-gray-500 mb-1">Category</p>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 rounded-full bg-indigo-500 mr-2"></span>
+                            <p class="text-lg font-medium text-gray-900"><%= expense.category %></p>
+                        </div>
+                    </div>
 
-  .detail-card:hover {
-    transform: scale(1.02); /* Slight zoom effect on hover */
-  }
+                    <!-- Payment Mode -->
+                    <div class="bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-colors">
+                        <p class="text-sm font-medium text-gray-500 mb-1">Payment Mode</p>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
+                            <p class="text-lg font-medium text-gray-900"><%= expense.paymentmode %></p>
+                        </div>
+                    </div>
 
-  /* Title and Detail styles */
-  .title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #2c3e50; /* Darker color */
-    margin-bottom: 20px;
-    text-align: center; /* Centered title */
-  }
+                    <!-- Remark -->
+                    <div class="bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-colors">
+                        <p class="text-sm font-medium text-gray-500 mb-1">Remark</p>
+                        <p class="text-lg font-medium text-gray-900"><%= expense.remark %></p>
+                    </div>
+                </div>
 
-  .label {
-    font-weight: bold;
-    color: #34495e; /* Dark gray for labels */
-  }
-
-  .value {
-    color: #7f8c8d; /* Light gray for values */
-    margin-bottom: 15px; /* Spacing below values */
-  }
-
-  /* Button styles */
-  .button {
-    display: inline-block;
-    padding: 10px 20px; /* Padding for buttons */
-    border-radius: 10px; /* Rounded corners */
-    font-weight: bold;
-    text-align: center;
-    transition: transform 0.3s, background-color 0.3s;
-    text-decoration: none; /* Remove underline */
-  }
-
-  .delete-button {
-    background-color: #e74c3c; /* Red for delete */
-    color: white;
-  }
-
-  .edit-button {
-    background-color: #3498db; /* Blue for edit */
-    color: white;
-  }
-
-  .button:hover {
-    transform: translateY(-3px); /* Lift effect on hover */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow effect */
-  }
-
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .title {
-      font-size: 1.5rem; /* Smaller title on mobile */
-    }
-  }
-</style>
-
-<!-- Expense Details Page -->
-<div class="animated-bg">
-  <div class="content-container">
-    <h1 class="title">Expense Details</h1>
-
-    <!-- Expense Detail Cards -->
-    <div class="detail-card">
-      <span class="label">Title:</span>
-      <span class="value"><%= expense.title %></span>
+                <!-- Action Buttons -->
+                <div class="flex gap-4 pt-6 border-t border-gray-100">
+                    <a href="/expense/update/<%= expense._id %>" 
+                       class="flex-1 px-6 py-3 bg-indigo-600 text-white text-center font-medium rounded-xl hover:bg-indigo-700 transition-colors">
+                        Edit Expense
+                    </a>
+                    <a href="/expense/delete/<%= expense._id %>" 
+                       class="flex-1 px-6 py-3 bg-white text-red-600 text-center font-medium rounded-xl border border-red-200 hover:bg-red-50 transition-colors">
+                        Delete Expense
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="detail-card">
-      <span class="label">Amount:</span>
-      <span class="value">$<%= expense.amount.toFixed(2) %></span>
-    </div>
-    <div class="detail-card">
-      <span class="label">Category:</span>
-      <span class="value"><%= expense.category %></span>
-    </div>
-    <div class="detail-card">
-      <span class="label">Remark:</span>
-      <span class="value"><%= expense.remark %></span>
-    </div>
-    <div class="detail-card">
-      <span class="label">Payment Mode:</span>
-      <span class="value"><%= expense.paymentmode %></span>
-    </div>
-
-    <div class="flex justify-center mt-8 space-x-4">
-      <a href="/expense/delete/<%= expense._id %>" class="button delete-button">
-        Delete
-      </a>
-      <a href="/expense/update/<%= expense._id %>" class="button edit-button">
-        Edit
-      </a>
-    </div>
-  </div>
 </div>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    body {
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* Hide scrollbar */
+    body::-webkit-scrollbar {
+        display: none;
+    }
+
+    body {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
 
 <%- include("partials/footer") %>
