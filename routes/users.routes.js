@@ -163,24 +163,92 @@ router.get("/signout", isLoggedIn, async (req, res) => {
 });
 
 
+
 router.get("/reset-password", isLoggedIn, async (req, res) => {
   res.render("resetpassworduser", {
     title: "Expense Tracker | Reset Password",
     user: req.user,
   });
 });
-router.post("/reset-password", isLoggedIn, async (req, res, next) => {
+
+
+
+
+
+
+
+
+
+
+
+
+// Handle password reset
+router.post('/reset-password', isLoggedIn, async (req, res) => {
   try {
-    await req.user.changePassword(
-      req.body.oldpassword,
-      req.body.newpassword
-    );
-    await req.user.save();
-    res.redirect("/user/profile");
+      const { oldpassword, newpassword } = req.body;
+      const user = await User.findById(req.user._id);
+
+      if (!user) {
+          req.flash('error', 'User not found');
+          return res.redirect('/user/profile');
+      }
+
+
+      // Verify old password
+      const isValidPassword = await bcrypt.compare(oldpassword, user.password);
+      if (!isValidPassword) {
+          req.flash('error', 'Current password is incorrect');
+          return res.redirect('/user/reset-password');
+      }
+
+      // Hash new password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newpassword, salt);
+
+      // Update password
+      user.password = hashedPassword;
+      await user.save();
+
+      req.flash('success', 'Password updated successfully');
+      res.redirect('/user/profile');
+
   } catch (error) {
-    next(error);
+      console.error('Password reset error:', error);
+      req.flash('error', 'Failed to reset password');
+      res.redirect('/user/reset-password');
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// this is the main code 
+
+// router.post("/reset-password", isLoggedIn, async (req, res, next) => {
+//   try {
+//     await req.user.changePassword(
+//       req.body.oldpassword,
+//       req.body.newpassword
+//     );
+//     await req.user.save();
+//     res.redirect("/user/profile");
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 
 router.get("/delete-account", isLoggedIn, async (req, res, next) => {
