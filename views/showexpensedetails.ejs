@@ -1,6 +1,4 @@
-
-<%- include("partials/header") %>
-<%- include("partials/nav") %>
+<%- include("partials/header") %> <%- include("partials/nav") %>
 
 <!-- Background Animation -->
 <style>
@@ -38,10 +36,16 @@
 
   /* Styling for the card containing details */
   .detail-card {
-    background: linear-gradient(145deg, #ffffff, #e6e6e6); /* Gradient background */
+    background: linear-gradient(
+      145deg,
+      #ffffff,
+      #e6e6e6
+    ); /* Gradient background */
     border-radius: 15px; /* More rounded corners */
     padding: 5px; /* Padding for content */
-    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1), -6px -6px 12px rgba(255, 255, 255, 0.7); /* Soft shadow */
+    box-shadow:
+      6px 6px 12px rgba(0, 0, 0, 0.1),
+      -6px -6px 12px rgba(255, 255, 255, 0.7); /* Soft shadow */
     transition: transform 0.3s; /* Transition effect */
     margin-bottom: 15px; /* Spacing between cards */
     width: 100%;
@@ -50,7 +54,6 @@
 
   .detail-card:hover {
     transform: scale(1.02); /* Slight zoom effect on hover */
-
   }
 
   /* Title and Detail styles */
@@ -79,7 +82,9 @@
     border-radius: 10px; /* Rounded corners */
     font-weight: bold;
     text-align: center;
-    transition: transform 0.3s, background-color 0.3s;
+    transition:
+      transform 0.3s,
+      background-color 0.3s;
     text-decoration: none; /* Remove underline */
   }
 

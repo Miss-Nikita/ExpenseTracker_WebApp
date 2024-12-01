@@ -1,21 +1,19 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const UserSchema = require('../models/user.schema.js')
-const imagekit = require("../util/imagekit")
+const UserSchema = require("../models/user.schema.js");
+const imagekit = require("../util/imagekit");
 
-const client = require('../util/cache.js')
+const client = require("../util/cache.js");
 
 const { isLoggedIn } = require("../middlewares/auth.middleware");
-const upload = require("../middlewares/multimedia.middleware")
-const fs = require("fs")
-
+const upload = require("../middlewares/multimedia.middleware");
+const fs = require("fs");
 
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const sendEmail = require("../config/email")
-const path = require("path")
-
+const sendEmail = require("../config/email");
+const path = require("path");
 
 passport.use(new LocalStrategy(UserSchema.authenticate()));
 passport.use(
@@ -31,8 +29,6 @@ passport.use(
     }
   )
 );
-
-
 
 router.get("/signup", async (req, res) => {
   res.render("signupuser", {
@@ -51,15 +47,14 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-
-router.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
+router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
 router.get(
   "/auth/google/callback",
   (req, res, next) => {
-    
     console.log("req => ", req.query);
     return next();
   },
@@ -97,11 +92,6 @@ router.get(
   }
 );
 
-
-
-
-
-
 router.get("/signin", async (req, res) => {
   res.render("signinuser", {
     title: "Expense Tracker | Signin",
@@ -109,18 +99,20 @@ router.get("/signin", async (req, res) => {
   });
 });
 
-
-router.post("/signin", passport.authenticate("local"), async (req, res, next) => {
-  try {
-    req.flash("success", "Successfully LoggedIn!");
-    res.redirect("/user/profile");
-  } catch (error) {
-    console.log(error);
-    next(error);
-    // res.redirect("/user/signin");
+router.post(
+  "/signin",
+  passport.authenticate("local"),
+  async (req, res, next) => {
+    try {
+      req.flash("success", "Successfully LoggedIn!");
+      res.redirect("/user/profile");
+    } catch (error) {
+      console.log(error);
+      next(error);
+      // res.redirect("/user/signin");
+    }
   }
-});
-
+);
 
 // router.post(
 //   "/signin",
@@ -133,7 +125,7 @@ router.post("/signin", passport.authenticate("local"), async (req, res, next) =>
 
 router.get("/profile", isLoggedIn, async (req, res, next) => {
   try {
-    const messages = req.flash();  // Get all flash messages
+    const messages = req.flash(); // Get all flash messages
     let user;
 
     if (req.user.emails) {
@@ -145,7 +137,7 @@ router.get("/profile", isLoggedIn, async (req, res, next) => {
     res.render("profileuser", {
       title: "Expense Tracker | Profile Page",
       user,
-      messages  // Pass all messages to the view
+      messages, // Pass all messages to the view
     });
 
     console.log(req.user);
@@ -154,15 +146,11 @@ router.get("/profile", isLoggedIn, async (req, res, next) => {
   }
 });
 
-
-
 router.get("/signout", isLoggedIn, async (req, res) => {
   req.logout(() => {
     res.redirect("/user/signin");
   });
 });
-
-
 
 router.get("/reset-password", isLoggedIn, async (req, res) => {
   res.render("resetpassworduser", {
@@ -171,91 +159,58 @@ router.get("/reset-password", isLoggedIn, async (req, res) => {
   });
 });
 
-
-
-
-
-
-
-
-
-
-
-
 // Handle password reset
-router.post('/reset-password', isLoggedIn, async (req, res) => {
-  try {
-      const { oldpassword, newpassword } = req.body;
-      const user = await User.findById(req.user._id);
-
-      if (!user) {
-          req.flash('error', 'User not found');
-          return res.redirect('/user/profile');
-      }
-
-
-      // Verify old password
-      const isValidPassword = await bcrypt.compare(oldpassword, user.password);
-      if (!isValidPassword) {
-          req.flash('error', 'Current password is incorrect');
-          return res.redirect('/user/reset-password');
-      }
-
-      // Hash new password
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(newpassword, salt);
-
-      // Update password
-      user.password = hashedPassword;
-      await user.save();
-
-      req.flash('success', 'Password updated successfully');
-      res.redirect('/user/profile');
-
-  } catch (error) {
-      console.error('Password reset error:', error);
-      req.flash('error', 'Failed to reset password');
-      res.redirect('/user/reset-password');
-  }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// this is the main code 
-
-// router.post("/reset-password", isLoggedIn, async (req, res, next) => {
+// router.post('/reset-password', isLoggedIn, async (req, res) => {
 //   try {
-//     await req.user.changePassword(
-//       req.body.oldpassword,
-//       req.body.newpassword
-//     );
-//     await req.user.save();
-//     res.redirect("/user/profile");
+//       const { oldpassword, newpassword } = req.body;
+//       const user = await User.findById(req.user._id);
+
+//       if (!user) {
+//           req.flash('error', 'User not found');
+//           return res.redirect('/user/profile');
+//       }
+
+//       // Verify old password
+//       const isValidPassword = await bcrypt.compare(oldpassword, user.password);
+//       if (!isValidPassword) {
+//           req.flash('error', 'Current password is incorrect');
+//           return res.redirect('/user/reset-password');
+//       }
+
+//       // Hash new password
+//       const salt = await bcrypt.genSalt(10);
+//       const hashedPassword = await bcrypt.hash(newpassword, salt);
+
+//       // Update password
+//       user.password = hashedPassword;
+//       await user.save();
+
+//       req.flash('success', 'Password updated successfully');
+//       res.redirect('/user/profile');
+
 //   } catch (error) {
-//     next(error);
+//       console.error('Password reset error:', error);
+//       req.flash('error', 'Failed to reset password');
+//       res.redirect('/user/reset-password');
 //   }
 // });
 
+// this is the main code
+
+router.post("/reset-password", isLoggedIn, async (req, res, next) => {
+  try {
+    await req.user.changePassword(req.body.oldpassword, req.body.newpassword);
+    await req.user.save();
+    res.redirect("/user/profile");
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.get("/delete-account", isLoggedIn, async (req, res, next) => {
   try {
     // await UserSchema.findByIdAndDelete(req.user._id);
     // code to delete profile pic
-
 
     console.log("about to delete user");
 
@@ -267,8 +222,6 @@ router.get("/delete-account", isLoggedIn, async (req, res, next) => {
     //   fs.unlinkSync( path.join(__dirname, user.avatar.url));
     // }
 
-  
-
     // code to delete all relaated expenses
     res.redirect("/user/signin");
   } catch (error) {
@@ -276,14 +229,12 @@ router.get("/delete-account", isLoggedIn, async (req, res, next) => {
   }
 });
 
-
 router.get("/update", isLoggedIn, async (req, res) => {
   res.render("updateuser", {
     title: "Expense Tracker | Update User",
     user: req.user,
   });
 });
-
 
 router.post("/update", isLoggedIn, async (req, res, next) => {
   try {
@@ -294,44 +245,34 @@ router.post("/update", isLoggedIn, async (req, res, next) => {
   }
 });
 
-
-
-
 router.post("/avatar", isLoggedIn, async (req, res, next) => {
   // console.log(req.files);
 
   try {
+    if (req.user.avatar.fileId) {
+      await imagekit.deleteFile(req.user.avatar.fileId);
+    }
 
-      if (req.user.avatar.fileId) {
-          await imagekit.deleteFile(req.user.avatar.fileId);
-      }
+    const result = await imagekit.upload({
+      file: req.files.avatar.data,
+      fileName: req.files.avatar.name,
+    });
 
-      const result = await imagekit.upload({
-          file: req.files.avatar.data,
-          fileName: req.files.avatar.name,
-      });
+    // console.log(result);
+    // res.json(result);
 
-      // console.log(result);
-      // res.json(result);
+    // req.user.avatar = result.url;
+    // await req.user.save();
+    // res.redirect("/user/update");
 
-      // req.user.avatar = result.url;
-      // await req.user.save();
-      // res.redirect("/user/update");
-
-      const { fileId, url, thumbnailUrl } = result;
-      req.user.avatar = { fileId, url, thumbnailUrl };
-      // await req.user.save();
-      res.redirect("/user/update");
-
-
+    const { fileId, url, thumbnailUrl } = result;
+    req.user.avatar = { fileId, url, thumbnailUrl };
+    // await req.user.save();
+    res.redirect("/user/update");
   } catch (error) {
-      next(error);
+    next(error);
   }
 });
-
-
-
-
 
 // router.post("/avatar", isLoggedIn, async (req, res, next) => {
 //   console.log(req.files);
@@ -350,9 +291,6 @@ router.post("/avatar", isLoggedIn, async (req, res, next) => {
 //   }
 // });
 
-
-
-
 router.get("/forget-password", async (req, res) => {
   res.render("forgetpassword_email", {
     title: "Expense Tracker | Forget Password",
@@ -360,34 +298,30 @@ router.get("/forget-password", async (req, res) => {
   });
 });
 
-
-
 router.post("/forget-password", async (req, res, next) => {
   try {
-    console.log(req.body.email)
-      const user = await UserSchema.findOne({ email: req.body.email });
-      console.log(user)
+    console.log(req.body.email);
+    const user = await UserSchema.findOne({ email: req.body.email });
+    console.log(user);
 
-      if (!user) return next(new Error("User not found!"));
+    if (!user) return next(new Error("User not found!"));
 
-    const otp=Math.round(Math.random()*10000);
-           // send email to user with otp
+    const otp = Math.round(Math.random() * 10000);
+    // send email to user with otp
     sendEmail(
       user.email,
-      'welcome to m11-server',
-      '',
-      `<h1>your onetime otp is ${otp}</h1>` );
+      "welcome to m11-server",
+      "",
+      `<h1>your onetime otp is ${otp}</h1>`
+    );
 
-      // and save the same otp to database
-      await client.set("user:otp:1234",JSON.stringify(otp))
-      res.redirect(`/user/forget-password/${user._id}`);
+    // and save the same otp to database
+    await client.set("user:otp:1234", JSON.stringify(otp));
+    res.redirect(`/user/forget-password/${user._id}`);
   } catch (error) {
-      next(error);
+    next(error);
   }
 });
-
-
-
 
 router.get("/forget-password/:id", async (req, res) => {
   res.render("forgetpassword_otp", {
@@ -397,22 +331,19 @@ router.get("/forget-password/:id", async (req, res) => {
   });
 });
 
-
 router.post("/forget-password/:id", async (req, res, next) => {
   try {
-      const user = await UserSchema.findById(req.params.id);
-      // compare the req.body.otp with the otp in database
-      const otp=await client.get("user:otp:1234")
-      if(req.body.otp== JSON.parse(otp)){
+    const user = await UserSchema.findById(req.params.id);
+    // compare the req.body.otp with the otp in database
+    const otp = await client.get("user:otp:1234");
+    if (req.body.otp == JSON.parse(otp)) {
       // if matched redirect to password page else ERROR
       res.redirect(`/user/set-password/${user._id}`);
-  }
-  else{
+    } else {
       console.log("invalid otp");
-      
     }
   } catch (error) {
-      next(error);
+    next(error);
   }
 });
 
@@ -424,13 +355,12 @@ router.get("/set-password/:id", async (req, res) => {
   });
 });
 
-
 router.post("/set-password/:id", async (req, res, next) => {
   try {
     const user = await UserSchema.findById(req.params.id);
     await user.setPassword(req.body.password);
 
-    user.otp=undefined;
+    user.otp = undefined;
 
     await user.save();
     res.redirect("/user/signin");
@@ -439,7 +369,4 @@ router.post("/set-password/:id", async (req, res, next) => {
   }
 });
 
-
 module.exports = router;
-
-
