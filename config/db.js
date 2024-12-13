@@ -7,3 +7,6 @@ mongoose.connect(process.env.MONGOURL).then(()=>{
     console.log(error);
  
 })
+
+
+
