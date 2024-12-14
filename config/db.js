@@ -1,12 +1,10 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-mongoose.connect(process.env.MONGOURL).then(()=>{
+mongoose
+  .connect(process.env.MONGOURL)
+  .then(() => {
     console.log("database is Established ");
-    
-}).catch((error) => {
+  })
+  .catch((error) => {
     console.log(error);
- 
-})
-
-
-
+  });
